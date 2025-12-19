@@ -2,7 +2,9 @@
 
 Convert Spotify extended streaming history into an SQLite DB.
 
-Also includes some SQL queries for analyzing the database.
+For me, my Spotify listening history was 188 MB of JSON files. This script converts that data into a 22 MB SQLite DB that's much easier and faster to analyze.
+
+Some sample SQL queries are included in the `sql/` directory.
 
 ## Usage
 
