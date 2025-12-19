@@ -8,7 +8,6 @@ import (
 	"log"
 	"os"
 	"path/filepath"
-	"regexp"
 	"slices"
 	"time"
 
@@ -23,29 +22,17 @@ type Song struct {
 	MsPlayed  int       `json:"ms_played"`
 }
 
-func getFiles(dirPath string) ([]string, error) {
-	entries, err := os.ReadDir(dirPath)
+func parseJson(dirPath string) ([]Song, error) {
+	pattern := filepath.Join(dirPath, "Streaming*Audio*.json")
+	files, err := filepath.Glob(pattern)
 	if err != nil {
 		return nil, err
-	}
-
-	var files []string
-	re := regexp.MustCompile(`Audio.*\.json$`)
-	for _, entry := range entries {
-		if !entry.IsDir() && re.MatchString(entry.Name()) {
-			fullPath := filepath.Join(dirPath, entry.Name())
-			files = append(files, fullPath)
-		}
 	}
 
 	if len(files) == 0 {
 		return nil, errors.New("No files read")
 	}
 
-	return files, nil
-}
-
-func parseJson(files []string) ([]Song, error) {
 	var allSongs []Song
 
 	for _, f := range files {
@@ -146,12 +133,8 @@ func main() {
 	}
 
 	root := os.Args[1]
-	files, err := getFiles(root)
-	if err != nil {
-		log.Fatal(err)
-	}
 
-	songs, err := parseJson(files)
+	songs, err := parseJson(root)
 	if err != nil {
 		log.Fatal(err)
 	}
