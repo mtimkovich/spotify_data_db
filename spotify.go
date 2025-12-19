@@ -31,7 +31,10 @@ func getFiles(dirPath string) ([]string, error) {
 
 	var files []string
 	for _, entry := range entries {
-		if !entry.IsDir() && strings.HasSuffix(entry.Name(), ".json") && strings.Contains(entry.Name(), "Audio") {
+		if !entry.IsDir() &&
+			strings.HasSuffix(entry.Name(), ".json") &&
+			strings.Contains(entry.Name(), "Audio") {
+
 			fullPath := filepath.Join(dirPath, entry.Name())
 			files = append(files, fullPath)
 		}
